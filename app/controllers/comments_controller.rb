@@ -1,6 +1,8 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: [:show, :edit, :update, :destroy]
+  before_action :set_resource, only: [:new, :create]
   skip_before_action :authenticate_user!
+
 
   # GET /comments
   # GET /comments.json
@@ -15,7 +17,9 @@ class CommentsController < ApplicationController
 
   # GET /comments/new
   def new
-    @comment = Comment.new
+    # @comment = Comment.new
+      @comment = Comment.new(parent_id: params[:parent_id])
+
   end
 
   # GET /comments/1/edit
@@ -24,20 +28,12 @@ class CommentsController < ApplicationController
 
   # POST /comments
   # POST /comments.json
+ 
   def create
-    @comment = Comment.new(comment_params)
-
-    respond_to do |format|
-      if @comment.save
-        format.html { redirect_to @comment, notice: 'Comment was successfully created.' }
-        format.json { render :show, status: :created, location: @comment }
-      else
-        format.html { render :new }
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
-      end
-    end
+    @comment = @resource.comments.new comment_params
+    @comment.save
+    redirect_to root_url, notice: "your comment was successfully posted" 
   end
-
   # PATCH/PUT /comments/1
   # PATCH/PUT /comments/1.json
   def update
@@ -66,10 +62,26 @@ class CommentsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_comment
       @comment = Comment.find(params[:id])
+      # parent = Comment.find(params[:comment])
+
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def comment_params
-      params.require(:comment).permit(:name, :resource_type, :body, :parent_id, :resource_id)
+      params.require(:comment).permit(:name, :body, :parent_id)
+    end
+
+    def set_resource
+      if params[:blog_id]
+        @resource = Blog.find(params[:blog_id])
+        @resource_type = "blog"
+      elsif params[:image_id]
+        @resource = Image.find(params[:image_id])
+        @resource_type = "image"
+      else
+         @resource = Event.find(params[:event_id])
+        @resource_type = "event"
+          
+      end
     end
 end

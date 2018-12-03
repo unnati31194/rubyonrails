@@ -1,4 +1,3 @@
-<p id="notice"><%= notice %></p>
 
 <p>
   <strong>Name:</strong>
@@ -6,24 +5,8 @@
 </p>
 
 <p>
-  <strong>Type:</strong>
-  <%= @comment.type %>
-</p>
-
-<p>
   <strong>Body:</strong>
   <%= @comment.body %>
 </p>
 
-<p>
-  <strong>Parent:</strong>
-  <%= @comment.parent %>
-</p>
 
-<p>
-  <strong>Activityid:</strong>
-  <%= @comment.activityid %>
-</p>
-
-<%= link_to 'Edit', edit_comment_path(@comment) %> |
-<%= link_to 'Back', comments_path %>

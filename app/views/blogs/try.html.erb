@@ -1,0 +1,65 @@
+class ChangePasswordController < ApplicationController
+ before_action :authenticate_user!
+  def index
+  end
+  def edit
+    @user = current_user
+  end
+
+  def update_password
+    @user = current_user
+    if @user.update_with_password(user_params)
+      # Sign in the user by passing validation in case their password changed
+      bypass_sign_in(@user)
+      redirect_to root_path
+    else
+      render "index"
+    end
+  end
+
+  private
+
+  def user_params
+    # NOTE: Using `strong_parameters` gem
+    params.require(:user).permit(:current_password, :password, :password_confirmation)
+  end
+end
+
+
+
+
+
+
+= form_for(@user, :url => { :action => "update_password" } ) do |f|
+  .field
+    = f.label :current_password
+    i (we need your current password to confirm your changes)
+    br/
+    = f.password_field :current_password
+ 
+  .field
+    = f.label :password, "Password"
+    br/
+    = f.password_field :password, :autocomplete => "off"
+  .field
+    = f.label :password_confirmation
+    br/
+    = f.password_field :password_confirmation
+  .action_container
+    = f.submit
+    .field
+
+
+ resource :user, only: [:edit] do
+  collection do
+    patch 'update_password'
+  end
+
+
+     resource :user, only: [:edit] do
+  collection do
+    patch 'update_password'
+  end
+
+ 
+ 

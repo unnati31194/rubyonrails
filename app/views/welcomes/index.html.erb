@@ -3,8 +3,8 @@
 <table>
   <thead>
     <tr>
-      <th>Title</th>
-      <th>Body</th>
+      <th colspan="2">Title</th>
+      <th colspan="3">Body</th>
       <th colspan="3">Comments</th>
     </tr>
   </thead>
@@ -12,18 +12,21 @@
   <tbody>
     <% @blogs.each do |blog| %>
       <tr>
-        <td><%= blog.title %></td>
-        <td><%= blog.body %></td>
-        <td> <% blog.comments.each do |comment| %>
-          <%= comment.name %>
-          <br/>
+        <td colspan="2"><%= blog.title %></td>
+        <td colspan="3"><%= blog.body %></td>
+        <td colspan="3"> <% blog.comments.each do |comment| %>
+           <br/> <u>Name  </u>
+            
+           <%= comment.name %>
+          <br/> <u>Comment</u>
+           
            <%= comment.body %>
            <br/>
+            <%= link_to 'reply', new_blog_comment_path(blog, parent_id: comment.id) %>
+             <br/>
              <% end %>
-           <%= link_to 'comment', new_comment_path %>
-        </td>
-       
-        
+           <%= link_to ' your comment', new_blog_comment_path(blog) %>
+        </td> 
       </tr>
     <% end %>
   </tbody>
@@ -42,14 +45,19 @@
   <tbody>
     <% @images.each do |image| %>
       <tr>
-        <td><%= image.name_file_name %></td>
+        <td><%= image_tag image.name.url(:medium) %></td>
        <td> <% image.comments.each do |comment| %>
+         <br/> <u>Name  </u>
           <%= comment.name %>
-          <br/>
+          
+           <br/> <u>Comment</u>
            <%= comment.body %>
            <br/>
+            <%= link_to 'reply', new_image_comment_path(image, parent_id: comment.id) %>
+             <br/>
              <% end %>
-           <%= link_to 'comment', new_comment_path %>
+            
+           <%= link_to 'your comment', new_image_comment_path(image) %>
         </td>
       </tr>
     <% end %>
@@ -76,12 +84,17 @@
         <td><%= event.date %></td>
         <td><%= event.description %></td>
          <td> <% event.comments.each do |comment| %>
+           <br/> <u>Name  </u>
           <%= comment.name %>
-          <br/>
+           <br/> <u>Comment</u>
+          
            <%= comment.body %>
            <br/>
+            <%= link_to 'reply', new_event_comment_path(event, parent_id: comment.id) %>
+             <br/>
              <% end %>
-           <%= link_to 'comment', new_comment_path %>
+              
+           <%= link_to 'your comment', new_event_comment_path(event) %>
         </td>
        
       </tr>

@@ -1,5 +1,5 @@
 <p id="notice"><%= notice %></p>
-
+<%- if @events.present? %>
 <h1>Events</h1>
 
 <table>
@@ -31,5 +31,9 @@
 </table>
 
 <br>
-
-<%= link_to 'New Event', new_event_path %>
+<%- else %>
+<p> No events found
+  <%- end %>
+  <br/>
+  
+<%= link_to 'Create New Event', new_event_path %>

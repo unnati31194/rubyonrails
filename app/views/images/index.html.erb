@@ -1,5 +1,5 @@
 <p id="notice"><%= notice %></p>
-
+<%- if @events.present? %>
 <h1>Images</h1>
 
 <table>
@@ -14,7 +14,7 @@
   <tbody>
     <% @images.each do |image| %>
       <tr>
-        <td><%= image.name %></td>
+        <td><%= image_tag image.name.url(:medium) %></td>
         <td><%= image.user_id %></td>
         <td><%= link_to 'Show', image %></td>
         <td><%= link_to 'Edit', edit_image_path(image) %></td>
@@ -25,5 +25,8 @@
 </table>
 
 <br>
-
-<%= link_to 'New Image', new_image_path %>
+<%- else %>
+<p> No images found
+  <%- end %>
+<br/>
+<%= link_to ' Upload New Image', new_image_path %>
